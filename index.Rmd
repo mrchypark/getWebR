@@ -1,0 +1,32 @@
+---
+title: "R로 웹 데이터를 가져오는 4가지 방법(은 크롤링)"
+author: "박찬엽"
+date: "2017년 10월 18일"
+output:
+  xaringan::moon_reader:
+    seal: false
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(cache = T, fig.height = 5)
+```
+
+
+class: center, middle, title-slide
+
+## R로 웹 데이터를 가져오는 4가지 방법(은 크롤링)
+
+### <https://mrchypark.github.io/getWebR>
+
+### 박찬엽
+
+### 2017년 10월 18일
+---
