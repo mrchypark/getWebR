@@ -17,6 +17,7 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(cache = T, fig.height = 5)
+library(xml2)
 ```
 
 
@@ -29,76 +30,158 @@ class: center, middle, title-slide
 ### 박찬엽
 
 ### 2017년 10월 18일
+
 ---
 
-크롤링은 총 5단계를 거침
+## 발표자소개
+.center[
+  #### 질문 / 상담 / 잡담 대환영!
+]
 
-요청
-정리
-저장
-반복
-예외처리
-
-사람들이 크롤링을 접근하는 순서
-
-요청 > curl, httr, rvest, RSelenium
-정리 > regexp, xml, rvest
-저장 > write.*
-반복 > for, parallel
-예외처리 > try, if
-
-
-오늘 이야기 할 것
-
-요청(4가지)과 정리
-메인과 에피타이저
-
-
-그럼 에피타이저 먼저!
-
-서버가 하는 것
-
-외부에서 요청하면 규칙대로 정보를 제공하는 것
+.pull-left[
+  .pull-right[
+<br>
+<br>
+    ![](https://avatars2.githubusercontent.com/u/6179259?v=4&s=460)
+  ]
+]
+.pull-right[
+### 박찬엽    
+- 서울도시가스 선행연구팀 연구원
+- 패스트 캠퍼스 [중급R프로그래밍](http://www.fastcampus.co.kr/data_camp_dabrp/) 강의
+- R 네이버 뉴스 크롤러 [N2H4](https://github.com/forkonlp/N2H4) 관리자
+- .yellow[**KAKAO**]@[알코홀릭](http://pf.kakao.com/_RXANd) R 질문방 운영
+- .blue[**FACEBOOK**]@[mrchypark](https://www.facebook.com/mrchypark)
+- .gray[**GITHUB**]@[mrchypark](https://github.com/mrchypark)
+]
 
 
-브라우저가 하는 것
-서버가 주는 것들을 사용자에게 보여주는 것
+---
+
+class: center, middle, title-slide
+
+## R로 웹 데이터를 가져오는 4가지 방법
+
+---
+class: center, middle, title-slide
+
+## 웹에 있는 데이터를 가져오는 단계
+
+### 요청 - 추출 - 저장 
+#### 반복
+#### 예외처리
+#### 최적화
+
+---
+
+## 관련 R 패키지 및 함수
+
+#### - 요청 : curl, httr, rvest, RSelenium
+#### - 정리 : 정규표현식, jsonlite, rvest
+#### - 저장 : write.*()
+#### - 반복 : for, parallel
+#### - 예외처리 : try, if
+#### - 최적화 : prove 
+
+---
+
+class: center, middle, title-slide
+
+## 오늘 이야기 할 것
+
+### 요청(4가지)과 정리
+#### .gray[메인과 에피타이저]
+
+---
+
+class: center, middle, title-slide
+
+## 그럼 에피타이저 먼저!
+
+---
+
+class: center, middle, title-slide
+
+## 서버가 하는 것
+
+### 외부에서 요청하면 규칙대로 정보를 제공하는 것
+
+---
+
+class: center, middle, title-slide
+
+## 브라우저가 하는 것
+### 서버가 주는 것들을 사용자에게 보여주는 것
+
+---
+
+class: center, middle, title-slide
 
 
 웹 서버가 우리에게 주는 것
 
 text(html, css, js, etc), image
 
+---
+
+class: center, middle, title-slide
+
 
 * 그럼 web api는 뭔가?
 web으로 제공되는 Application Programming Interface 라는 뜻
 대략 함수인데 외부 서버에서 동작하여 웹 기술로 결과를 받는 것
+
+---
+
+class: center, middle, title-slide
 
 
 우리가 필요한 것
 
 text!(html)
 
+---
+
+class: center, middle, title-slide
 
 
 그럼 이제 정리(에피타이저)를 설명(+ 요청 한가지)
 
 html 문서안에 글자 중 필요한 것만 가져오기 = 정리
 
+---
+
+class: center, middle, title-slide
+
 1번 글자를 다루는 강력한 방법 : 정규표현식 하지만 어려움
 2번 node를 다루는 쉬운 패키지 : rvest
+
+---
+
+class: center, middle, title-slide
 
 
 정규표현식은 검색해보세요.
 r에서는 stringr 이라는 서포트 패키지가 있음.
 
+---
+
+class: center, middle, title-slide
+
 rvest로 필요한 글자만 가져오기
 에는 node, attr, text만 기억하면 됨.
 
+---
+
+class: center, middle, title-slide
+
 node란
 html 에서 tag라고 불리는 것.
-
 css 선택자가 동작하는 방식으로 node를 선택
+
+---
+
+class: center, middle, title-slide
 
 css 선택자가 동작하는 3가지 방식
 1. tag 이름
@@ -110,45 +193,91 @@ css 선택자가 동작하는 3가지 방식
 
 각각 독립적으로 사용가능
 
+---
+
+class: center, middle, title-slide
+
 더 복잡한 기능은 여기
 http://www.nextree.co.kr/p8468/
 에서 2번 선택자의 종류 참고
 
+---
 
+class: center, middle, title-slide
 
-그리고 text는 
+text는 
 <tag> </tag> 사이의 글자를 뜻함
 
+---
+
+class: center, middle, title-slide
 
 attr은 attribute의 줄임으로 tag의 attr1은 example1 임
 <tag attr1="example1" attr2="example2"> </tag>
 
+---
+
+class: center, middle, title-slide
 
 그래서 xml 형식의 R 객체를 다루는 rvest는 html_nodes("")로 필요한 node를 선택하고
 attr 이나 text로 node 내에 필요한 값을 가져옴.
 
-ex>
 
-네이버 뉴스
+---
 
+## 예시
 
+```{r}
+library(rvest)
+url<-"http://news.naver.com/main/read.nhn?mode=LS2D&mid=shm&sid1=102&sid2=250&oid=025&aid=0002763120"
+(nv<-read_html(url))
+(nvns<-html_nodes(nv, "h3#articleTitle"))
+```
+.pull-left[
+```{r}
+(title<-html_text(nvns))
+```
+]
+.pull-right[
+```{r}
+(class<-html_attr(nvns, "class"))
+```
+]
+---
 
+class: center, middle, title-slide
 
 이러다 보니
 rvest는 html 문서로 되어 있는 웹에서의 텍스트 데이터를 가져오는데 특화됨(방법 1)
+
+---
+
+class: center, middle, title-slide
 
 
 서버는 http/1.1 표준을 지킴
 그래서 우리가 알아야 할 것
 GET과 POST
 
+---
+
+class: center, middle, title-slide
 
 방금 read_html 함수는 GET 방식으로 서버에 요청하여 데이터를 받은 것.
 그게 html 텍스트 문서인데 그걸 xml 자료형이라고 처리함. 어쨌든
 
+---
+
+class: center, middle, title-slide
+
 그럼 GET 으로 인터넷 주소를 요청하면 그 주소를 담당하는 서버가
 해당 주소로 GET 요청이 오면 주기로 하는 데이터를 전달해줌.
 보통 html
+
+---
+
+class: center, middle, title-slide
+
 
 web api 서버는? 데이터를 전달
 
@@ -156,14 +285,32 @@ web api 서버는? 데이터를 전달
 
 xml은 html과 같으니까 생략하고 그럼 json으로 주면 어떻게 하지?
 
+---
+
+class: center, middle, title-slide
 
 http 표준 요청을 수행해 주는 httr 패키지
+
+---
+
+class: center, middle, title-slide
+
 
 만약에 json 데이터를 주기로 했으면 GET 요청을 했을 때 json이 응답으로 들어옴
 GET은 언제나 같은 주소에서 같은 데이터를 받을 수 있음.
 
+---
+
+class: center, middle, title-slide
+
+
 그와 반면에 POST는 요청에 내가 추가하는 값과 함께 요청함
 그래서 결과가 그 값을 활용해서 나오는 결과임.
+
+---
+
+class: center, middle, title-slide
+
 
 띄어쓰기 예시
 
@@ -211,6 +358,12 @@ RSelenium이란 브라우저를 컨트롤하는 패키지(방법 3)
 크롬 개발자 도구를 이용하면 js가 가져오는 api를 찾아서
 더 빠르게 정보를 가져올 수 있음
 
-네이버 댓글 + kind 예시
+네이버 댓글
 
-끝!
+
+---
+
+class: center, middle, title-slide
+
+# 끝!
+
