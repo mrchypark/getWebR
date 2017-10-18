@@ -547,7 +547,9 @@ pJS$stop()
 
 ## 시연
 
-[시연코드 가기]()
+키 입력과 마우스 클릭을 확인
+
+[시연코드 가기](https://raw.githubusercontent.com/mrchypark/getWebR/master/RSelenium.R)
 
 ---
 
