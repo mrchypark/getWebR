@@ -61,9 +61,7 @@ class: center, middle, title-slide
 ## 웹에 있는 데이터를 가져오는 단계
 
 ### 요청 - 추출 - 저장 
-#### 반복
-#### 예외처리
-#### 최적화
+### 반복 - 예외처리 - 최적화
 
 ---
 
@@ -74,7 +72,18 @@ class: center, middle, title-slide
 #### - 저장 : write.*()
 #### - 반복 : for, parallel
 #### - 예외처리 : try, if
-#### - 최적화 : prove 
+#### - 최적화 : profvis, microbenchmark
+
+---
+
+## 관련 R 패키지 및 함수
+
+#### **- 요청 : curl, httr, rvest, RSelenium**
+#### **- 정리 : 정규표현식, jsonlite, rvest**
+#### - .gray[저장 : write.*()]
+#### - .gray[반복 : for, parallel]
+#### - .gray[예외처리 : try, if]
+#### - .gray[최적화 : profvis, microbenchmark]
 
 ---
 
@@ -83,7 +92,7 @@ class: center, middle, title-slide
 ## 오늘 이야기 할 것
 
 ### 요청(4가지)과 정리
-#### .gray[메인과 에피타이저]
+### .gray[메인과 에피타이저]
 
 ---
 
@@ -93,12 +102,13 @@ class: center, middle, title-slide
 
 ---
 
-class: center, middle, title-slide
-
 ## 서버가 하는 것
-
-### 외부에서 요청하면 규칙대로 정보를 제공하는 것
-
+.pull-left[
+ 외부에서 요청하면 규칙대로 정보를 제공하는 것
+]
+.pull-right[
+![](https://pbs.twimg.com/profile_images/581161893219323904/eGnWc30X.png)
+]
 ---
 
 class: center, middle, title-slide
@@ -377,14 +387,76 @@ RSelenium이란 브라우저를 컨트롤하는 패키지(방법 3)
 크롬 개발자 도구를 이용하면 js가 가져오는 api를 찾아서
 더 빠르게 정보를 가져올 수 있음
 
-네이버 댓글
+---
 
+
+```r
+url&lt;-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&amp;templateId=view_society&amp;pool=cbox5&amp;_callback=jQuery1707377572341505474_1508264183038&amp;lang=ko&amp;country=&amp;objectId=news437%2C0000165410&amp;categoryId=&amp;pageSize=10&amp;indexSize=10&amp;groupId=&amp;listType=OBJECT&amp;page=1&amp;sort=new&amp;includeAllStatus=true&amp;_=1508264264524"
+
+con &lt;- httr::GET(url)
+tt &lt;- httr::content(con, "text")
+```
+
+---
+
+
+```r
+url&lt;-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&amp;templateId=view_society&amp;pool=cbox5&amp;_callback=jQuery1707377572341505474_1508264183038&amp;lang=ko&amp;country=&amp;objectId=news437%2C0000165410&amp;categoryId=&amp;pageSize=10&amp;indexSize=10&amp;groupId=&amp;listType=OBJECT&amp;page=1&amp;sort=new&amp;includeAllStatus=true&amp;_=1508264264524"
+ref&lt;-"http://news.naver.com/main/read.nhn?mode=LSD&amp;mid=shm&amp;sid1=102&amp;oid=437&amp;aid=0000165410"
+con &lt;- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt &lt;- httr::content(con, "text")
+```
+
+---
+
+
+```r
+url&lt;-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&amp;templateId=view_society&amp;pool=cbox5&amp;_callback=jQuery1707377572341505474_1508264183038&amp;lang=ko&amp;country=&amp;objectId=news437%2C0000165410&amp;categoryId=&amp;pageSize=10&amp;indexSize=10&amp;groupId=&amp;listType=OBJECT&amp;page=1&amp;sort=new&amp;includeAllStatus=true&amp;_=1508264264524"
+ref&lt;-"http://news.naver.com/main/read.nhn?mode=LSD&amp;mid=shm&amp;sid1=102&amp;oid=437&amp;aid=0000165410"
+con &lt;- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt &lt;- httr::content(con, "text")
+jsonlite::fromJSON(tt)
+```
+
+---
+
+
+```r
+url&lt;-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&amp;templateId=view_society&amp;pool=cbox5&amp;_callback=jQuery1707377572341505474_1508264183038&amp;lang=ko&amp;country=&amp;objectId=news437%2C0000165410&amp;categoryId=&amp;pageSize=10&amp;indexSize=10&amp;groupId=&amp;listType=OBJECT&amp;page=1&amp;sort=new&amp;includeAllStatus=true&amp;_=1508264264524"
+ref&lt;-"http://news.naver.com/main/read.nhn?mode=LSD&amp;mid=shm&amp;sid1=102&amp;oid=437&amp;aid=0000165410"
+con &lt;- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt &lt;- httr::content(con, "text")
+
+tt &lt;- gsub("(;|\n|_callback|jQuery1707377572341505474_1508264183038)", "", tt)
+tt &lt;- gsub("\\(", "[", tt)
+tt &lt;- gsub("\\)", "]", tt)
+
+data &lt;- jsonlite::fromJSON(tt)
+data$result$commentList[[1]]$contents
+```
+
+```
+##  [1] "저런걸 만들어놓고 중간에서 얼마나 해쳐드셨을까?"                                                                                                                                                                                      
+##  [2] "앞으로  지방정부나 중앙정부에서  이따위것만들려면 지자체장 개인 돈으로 우선 만들고 나서  추후 입장료 받아서 적자나면  지돈으로 해결시키고 남으면 정산처리해주기로 하자.  나랏돈은 눈먼 돈이라 여기는  역적  공뭔들이 없어지면 좋겠다."
+##  [3] "그러니까 짓지 말고 있는 공간내 한에서 촬영해....우리가 캐릭터에 집중하지 배경에 집착하는건 아니거든"                                                                                                                                  
+##  [4] "개인적으로 제주도 올인 세트장 아쉬움.... 계속 있었으면 명소가 됐을텐데"                                                                                                                                                               
+##  [5] "니돈이냐 내돈이냐 ㅋㅋㅋ 잘되면 내탓 못되면 니탓 ㅋㅋ"                                                                                                                                                                                
+##  [6] "다스는 누구꺼?https://youtu.be/o0Kk6_6P9wY"                                                                                                                                                                                           
+##  [7] "누군 단돈 만원도 아까워서. 없는돈 아끼려고 별짓을 다하는데.\n나라는 저러고 있내.9억원이면 내가 30년 먹고 써도 남것다."                                                                                                                
+##  [8] "첨부터 임시적으로 가건물이면 당연히 안전진단에서 좋은 등급은 나오기 힘들겠네.\n뻔한 스토리인데, 왜~  그렇게 큰돈을 들여 지었나? 이거~  뭐 구린거 있네. 조사해야것어. 그리고 나서  새로운 대책을 마련해야지. \n뭔가 수상해~"           
+##  [9] "변상조치 해라"                                                                                                                                                                                                                        
+## [10] "세금 좀 작작 걷어라"
+```
 
 ---
 
 class: center, middle, title-slide
 
 # 끝!
+### &lt;https://mrchypark.github.io/getWebR&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

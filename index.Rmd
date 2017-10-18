@@ -17,7 +17,6 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(cache = T, fig.height = 5)
-library(xml2)
 ```
 
 
@@ -68,9 +67,7 @@ class: center, middle, title-slide
 ## 웹에 있는 데이터를 가져오는 단계
 
 ### 요청 - 추출 - 저장 
-#### 반복
-#### 예외처리
-#### 최적화
+### 반복 - 예외처리 - 최적화
 
 ---
 
@@ -81,7 +78,18 @@ class: center, middle, title-slide
 #### - 저장 : write.*()
 #### - 반복 : for, parallel
 #### - 예외처리 : try, if
-#### - 최적화 : prove 
+#### - 최적화 : profvis, microbenchmark
+
+---
+
+## 관련 R 패키지 및 함수
+
+#### **- 요청 : curl, httr, rvest, RSelenium**
+#### **- 정리 : 정규표현식, jsonlite, rvest**
+#### - .gray[저장 : write.*()]
+#### - .gray[반복 : for, parallel]
+#### - .gray[예외처리 : try, if]
+#### - .gray[최적화 : profvis, microbenchmark]
 
 ---
 
@@ -90,7 +98,7 @@ class: center, middle, title-slide
 ## 오늘 이야기 할 것
 
 ### 요청(4가지)과 정리
-#### .gray[메인과 에피타이저]
+### .gray[메인과 에피타이저]
 
 ---
 
@@ -100,19 +108,23 @@ class: center, middle, title-slide
 
 ---
 
-class: center, middle, title-slide
-
 ## 서버가 하는 것
-
-### 외부에서 요청하면 규칙대로 정보를 제공하는 것
-
+.pull-left[
+외부에서 요청하면 규칙대로 정보를 제공하는 것
+]
+.pull-right[
+![](https://pbs.twimg.com/profile_images/581161893219323904/eGnWc30X.png)
+]
 ---
 
-class: center, middle, title-slide
-
 ## 브라우저가 하는 것
-### 서버가 주는 것들을 사용자에게 보여주는 것
 
+.pull-left[
+서버가 주는 것들을 사용자에게 보여주는 것
+]
+.pull-right[
+![](https://cdn.dribbble.com/users/107490/screenshots/2384364/icon-cloud-06_1x.png)
+]
 ---
 
 class: center, middle, title-slide
@@ -358,12 +370,56 @@ RSelenium이란 브라우저를 컨트롤하는 패키지(방법 3)
 크롬 개발자 도구를 이용하면 js가 가져오는 api를 찾아서
 더 빠르게 정보를 가져올 수 있음
 
-네이버 댓글
+---
 
+```{r}
+url<-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&templateId=view_society&pool=cbox5&_callback=jQuery1707377572341505474_1508264183038&lang=ko&country=&objectId=news437%2C0000165410&categoryId=&pageSize=10&indexSize=10&groupId=&listType=OBJECT&page=1&sort=new&includeAllStatus=true&_=1508264264524"
+
+con <- httr::GET(url)
+tt <- httr::content(con, "text")
+```
+
+---
+
+```{r}
+url<-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&templateId=view_society&pool=cbox5&_callback=jQuery1707377572341505474_1508264183038&lang=ko&country=&objectId=news437%2C0000165410&categoryId=&pageSize=10&indexSize=10&groupId=&listType=OBJECT&page=1&sort=new&includeAllStatus=true&_=1508264264524"
+ref<-"http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=102&oid=437&aid=0000165410"
+con <- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt <- httr::content(con, "text")
+```
+
+---
+
+```{r eval=FALSE}
+url<-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&templateId=view_society&pool=cbox5&_callback=jQuery1707377572341505474_1508264183038&lang=ko&country=&objectId=news437%2C0000165410&categoryId=&pageSize=10&indexSize=10&groupId=&listType=OBJECT&page=1&sort=new&includeAllStatus=true&_=1508264264524"
+ref<-"http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=102&oid=437&aid=0000165410"
+con <- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt <- httr::content(con, "text")
+jsonlite::fromJSON(tt)
+```
+
+---
+
+```{r}
+url<-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&templateId=view_society&pool=cbox5&_callback=jQuery1707377572341505474_1508264183038&lang=ko&country=&objectId=news437%2C0000165410&categoryId=&pageSize=10&indexSize=10&groupId=&listType=OBJECT&page=1&sort=new&includeAllStatus=true&_=1508264264524"
+ref<-"http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=102&oid=437&aid=0000165410"
+con <- httr::GET(url,
+                 httr::add_headers(Referer = ref))
+tt <- httr::content(con, "text")
+
+tt <- gsub("(;|\n|_callback|jQuery1707377572341505474_1508264183038)", "", tt)
+tt <- gsub("\\(", "[", tt)
+tt <- gsub("\\)", "]", tt)
+
+data <- jsonlite::fromJSON(tt)
+data$result$commentList[[1]]$contents
+```
 
 ---
 
 class: center, middle, title-slide
 
 # 끝!
-
+### <https://mrchypark.github.io/getWebR>
