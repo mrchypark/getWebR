@@ -514,41 +514,201 @@ class: center, middle, title-slide
 여기까지가 http 요청을 따라하는 httr 패키지(방법 2)
 
 ---
+class: center, middle, title-slide
 
-그럼 웹 서비스 2가지에 대응할 수 있게 되었음.
+## 중간 정산
 
-하나는 정적 웹 서비스, 다른 하나는 web api.
-이제 javascript를 이용한 동적 웹 서비스를 가져오는 방법이 필요
+이제 정적 웹 서비스내의 글자와 web api 데이터를 가져오는 2가지 방법을 알게 됨.
 
-js란 브라우저에서 동작하는 개발 언어!
+---
+class: center, middle, title-slide
 
-대표적인 사용처는 html 수정(정확하게 맞는 표현은 아니지만...)
+## 이제 필요한 것
 
-정적 vs 동적
+### 동적 웹 서비스에서 가져오기
 
 ---
 
+## 동적 웹 서비스란
 
-그래서 동적 부분의 수정된 html을 가져오려면 브라우저가 필요함
+javascript&lt;sup&gt;1&lt;/sup&gt;가 웹페이지 동작을 조절하는 것.
 
-사용할 수 있는 대표적인 패키지 RSelenium
+.pull-center[.set[
+![](https://qph.ec.quoracdn.net/main-qimg-1f99b9ce08edd2309efff97b710ffcbe)
+]]
 
-Selenium은 코드로 브라우저를 컨트롤하는 패키지.
-그래서 브라우저를 움직일 수 있다!
+.footnote[
+[1] [javascript](https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8) : 브라우저에서 동작하는 개발 언어로 동적 웹 서비스를 개발하는 목적으로 많이 사용함.
+]
 
-단점 &gt; 느림 그래서!
+---
 
-+ phantomjs
+## 그래서 브라우저가 필요함
 
-phantomjs는 headless 브라우저임
-headless란 사람이 보는 부분이 없는 것
+동적 웹 서비스내의 데이터는 브라우저가 처리해준 결과이기 때문에 브라우저와 같이 처리하는 방법을 찾던지, 브라우저를 사용하던지 해야 함.
 
-최근 chrome도 headless를 자체적으로 지원하기 시작함
-아직 R 패키지로 나오지는 않았지만 조만간 지원할 듯
+---
+class: center, middle, title-slide
+
+
+## [RSelenium](https://github.com/ropensci/RSelenium)
+
+---
+
+## Selenium 이란
+
+Selenium은 코드로 브라우저를 컨트롤하는 패키지. 그래서 브라우저를 움직일 수 있다! 그걸 R에서 사용하는 [RSelenium 패키지](https://github.com/ropensci/RSelenium)를 사용할 예정
+
+.pull-center[.ori[
+![](https://2.bp.blogspot.com/-idwhrEvGRcM/WAhO0w9TwnI/AAAAAAAAAGU/xThZWzPBrfIiz_RbcIk4CTwrpZiVJayFgCLcB/s320/Selenium.jpg)
+]]
+
+---
+
+class: center, middle, title-slide
+
+## 어떤 브라우저를 사용할까?
+
+## [phantomjs](http://phantomjs.org/)
+
+---
+
+## phantonjs 란
+
+phantomjs는 headless 브라우저로 headless란 사람이 보는 부분이 없는 것
+
+.pull-center[.ori[
+![](http://phantomjs.org/img/phantomjs-logo.png)
+]]
+
+.footnote[
+ * 최근 chrome도 headless를 자체적으로 지원하기 시작함.
+]
+
+---
+
+## 실행
+
+
+```r
+library(RSelenium)
+pJS &lt;- wdman::phantomjs(port = 4567L)
+```
+
+```
+## checking phantomjs versions:
+```
+
+```
+## BEGIN: PREDOWNLOAD
+```
+
+```
+## BEGIN: DOWNLOAD
+```
+
+```
+## BEGIN: POSTDOWNLOAD
+```
+
+```r
+remDr &lt;- remoteDriver(port=4567L, browserName = 'phantomjs')
+remDr$open()
+```
+
+```
+## [1] "Connecting to remote server"
+## $browserName
+## [1] "phantomjs"
+## 
+## $version
+## [1] "2.1.1"
+## 
+## $driverName
+## [1] "ghostdriver"
+## 
+## $driverVersion
+## [1] "1.2.0"
+## 
+## $platform
+## [1] "windows-10-32bit"
+## 
+## $javascriptEnabled
+## [1] TRUE
+## 
+## $takesScreenshot
+## [1] TRUE
+## 
+## $handlesAlerts
+## [1] FALSE
+## 
+## $databaseEnabled
+## [1] FALSE
+## 
+## $locationContextEnabled
+## [1] FALSE
+## 
+## $applicationCacheEnabled
+## [1] FALSE
+## 
+## $browserConnectionEnabled
+## [1] FALSE
+## 
+## $cssSelectorsEnabled
+## [1] TRUE
+## 
+## $webStorageEnabled
+## [1] FALSE
+## 
+## $rotatable
+## [1] FALSE
+## 
+## $acceptSslCerts
+## [1] FALSE
+## 
+## $nativeEvents
+## [1] TRUE
+## 
+## $proxy
+## $proxy$proxyType
+## [1] "direct"
+## 
+## 
+## $id
+## [1] "9e3ec3e0-b3dc-11e7-879a-75a13a976c30"
+```
+
+---
+
+## 실행
+
+
+```r
+remDr$navigate("http://www.google.com/ncr")
+remDr$getTitle()[[1]]
+```
+
+```
+## [1] "Google"
+```
+
+```r
+remDr$close()
+pJS$stop()
+```
+
+```
+## [1] TRUE
+```
+
+---
+
+class: center, middle, title-slide
 
 RSelenium이란 브라우저를 컨트롤하는 패키지(방법 3)
 
 ---
+
 class: center, middle, title-slide
 
 마지막으로...
@@ -563,15 +723,28 @@ class: center, middle, title-slide
 
 ---
 
+## GET 요청
+
+찾아낸 주소에 GET() 요청을 시도함(은 실패). 이런 웹 서비스 내에서 사용하는 api의 경우 OpenAPI 가 아니기 때문에 설명서 없고, 다양한 시도를 통해서 사용법을 찾아야 함.
+
 
 ```r
 url&lt;-"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&amp;templateId=view_society&amp;pool=cbox5&amp;_callback=jQuery1707377572341505474_1508264183038&amp;lang=ko&amp;country=&amp;objectId=news437%2C0000165410&amp;categoryId=&amp;pageSize=10&amp;indexSize=10&amp;groupId=&amp;listType=OBJECT&amp;page=1&amp;sort=new&amp;includeAllStatus=true&amp;_=1508264264524"
 
 con &lt;- httr::GET(url)
 tt &lt;- httr::content(con, "text")
+tt
+```
+
+```
+## [1] "jQuery1707377572341505474_1508264183038({\"success\":false,\"code\":\"3999\",\"message\":\"잘못된 접근입니다.\",\"lang\":\"ko\",\"country\":\"UNKNOWN\",\"result\":{},\"date\":\"2017-10-18T08:16:21+0000\"});"
 ```
 
 ---
+
+## 추가 정보 제공
+
+네이버 뉴스 댓글의 경우, referer라는 정보가 요청 header에 있어야만 정상 동작함
 
 
 ```r
@@ -580,9 +753,18 @@ ref&lt;-"http://news.naver.com/main/read.nhn?mode=LSD&amp;mid=shm&amp;sid1=102&a
 con &lt;- httr::GET(url,
                  httr::add_headers(Referer = ref))
 tt &lt;- httr::content(con, "text")
+tt
+```
+
+```
+## [1] "jQuery1707377572341505474_1508264183038({\"success\":true,\"code\":\"1000\",\"message\":\"요청을 성공적으로 처리하였습니다.\",\"lang\":\"ko\",\"country\":\"UNKNOWN\",\"result\":{\"listStatus\":\"all\",\"sort\":\"NEW\",\"count\":{\"comment\":481,\"reply\":84,\"exposeCount\":443,\"delCommentByUser\":39,\"delCommentByMon\":0,\"blindCommentByUser\":0,\"blindReplyByUser\":0,\"total\":565},\"exposureConfig\":{\"reason\":null,\"status\":\"COMMENT_ON\"},\"bestList\":[],\"pageModel\":{\"page\":1,\"pageSize\":10,\"indexSize\":10,\"startRow\":1,\"endRow\":10,\"totalRows\":481,\"startIndex\":0,\"totalPages\":49,\"firstPage\":1,\"prevPage\":0,\"nextPage\":2,\"lastPage\":10,\"current\":null,\"moveToLastPage\":false,\"moveToComment\":false,\"moveToLastPrev\":false},\"commentList\":[{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099281045,\"parentCommentNo\":1099281045,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508285910732,\"contents\":\"드라마세트장같은건 시간이 지나면 서서히 시들게 되있음 그럼 거기다 돈을 투자할려면 장기적으로 보고 후에 다른 컨텐츠를 확보해서 유지할 생각을 해야되는데 아무도 그런생각을 안함. 그런 상황도 모르고 지차체에서 돈퍼줄 생각을 한 사람도 잘라야됨\",\"userIdNo\":\"2rDrc\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"k1_h****\",\"userProfileImage\":\"http://profile.phinf.naver.net/44766/f50ff2238a6237ad6f173d7639bac8e328ef6e9aa31ca3fe1b68e94299682698.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T09:18:30+0900\",\"modTimeGmt\":\"2017-10-18T00:18:30+0000\",\"regTime\":\"2017-10-18T09:18:30+0900\",\"regTimeGmt\":\"2017-10-18T00:18:30+0000\",\"sympathyCount\":1,\"antipathyCount\":1,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":true,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"k1_h****\",\"maskedUserName\":\"k1****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099270075,\"parentCommentNo\":1099270075,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508284825689,\"contents\":\"긍까 세금은 저리 써버리고 유명연옌은 돈 쓸어가고..방송국서 외쿡도 꽁으로 보내주고...\",\"userIdNo\":\"1CuAv\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"ultr****\",\"userProfileImage\":\"http://profile.phinf.naver.net/27534/2c1fd07243af0f5b810d93ace2f5be883ae42c73a033105d4b2f3e64723478cd.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T09:00:25+0900\",\"modTimeGmt\":\"2017-10-18T00:00:25+0000\",\"regTime\":\"2017-10-18T09:00:25+0900\",\"regTimeGmt\":\"2017-10-18T00:00:25+0000\",\"sympathyCount\":3,\"antipathyCount\":0,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"ultr****\",\"maskedUserName\":\"ul****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"default_society\",\"commentNo\":1099269365,\"parentCommentNo\":1099269365,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508284760064,\"contents\":\"관리와 꾸준한 홍보 했음 이리  허물겠어?  주민들도 그래 지들이 관광객 받을 생각이였음 누워서 떡먹을 생각말고 지들끼리라도 발전시켰어야지\",\"userIdNo\":\"kkfp\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"tkfk****\",\"userProfileImage\":\"http://profile.phinf.naver.net/30648/bb8ebf7639fac3779b7a38a0da1ccc91fdfaaf29f8a84861cb9985438924e8f5.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:59:20+0900\",\"modTimeGmt\":\"2017-10-17T23:59:20+0000\",\"regTime\":\"2017-10-18T08:59:20+0900\",\"regTimeGmt\":\"2017-10-17T23:59:20+0000\",\"sympathyCount\":0,\"antipathyCount\":0,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"tkfk****\",\"maskedUserName\":\"tk****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099268805,\"parentCommentNo\":1099268805,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508284712984,\"contents\":\"드라마에서 못벗어나는 한심한 민족!\",\"userIdNo\":\"32UAS\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"thet****\",\"userProfileImage\":\"http://profile.phinf.naver.net/25766/b21fe58d1323d0b9f3db41682b4abd964a3939db5c41da0cf8d96334c345c420.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:58:32+0900\",\"modTimeGmt\":\"2017-10-17T23:58:32+0000\",\"regTime\":\"2017-10-18T08:58:32+0900\",\"regTimeGmt\":\"2017-10-17T23:58:32+0000\",\"sympathyCount\":1,\"antipathyCount\":1,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"thet****\",\"maskedUserName\":\"th****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099257875,\"parentCommentNo\":1099257875,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508283563049,\"contents\":\"임기내에 뭔가 보이는 업적 쌓아보겠다고 이것저것 많이 쳐 만드는데 막상 시간지나면 쓸데없어진게 대다수고 그런데서 세금 줄줄 다 새지. 시공업체 뇌물 받아먹기도 안성맞춤\",\"userIdNo\":\"5bPRe\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"tu17****\",\"userProfileImage\":\"http://profile.phinf.naver.net/35620/efa8622468f699acd76a664da4dbace7f8e94db32a4f4c09af0b4756e32fabde.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:39:23+0900\",\"modTimeGmt\":\"2017-10-17T23:39:23+0000\",\"regTime\":\"2017-10-18T08:39:23+0900\",\"regTimeGmt\":\"2017-10-17T23:39:23+0000\",\"sympathyCount\":1,\"antipathyCount\":0,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"tu17****\",\"maskedUserName\":\"tu****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099246205,\"parentCommentNo\":1099246205,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508282463113,\"contents\":\"그래서 다스는 누구껀가요?\",\"userIdNo\":\"39AJd\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"proh****\",\"userProfileImage\":\"http://profile.phinf.naver.net/35904/c11e83263ffce280074f49992adc2643fe84e3f8242474171890b862d54f231b.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:21:03+0900\",\"modTimeGmt\":\"2017-10-17T23:21:03+0000\",\"regTime\":\"2017-10-18T08:21:03+0900\",\"regTimeGmt\":\"2017-10-17T23:21:03+0000\",\"sympathyCount\":1,\"antipathyCount\":1,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":true,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"proh****\",\"maskedUserName\":\"pr****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099243595,\"parentCommentNo\":1099243595,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508282164602,\"contents\":\"영화찍을때 화재 연기좀 안나게 합시다 매연과 미세먼지 보기만 해도 숨막혀여~\",\"userIdNo\":\"4rBh2\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"cms2****\",\"userProfileImage\":\"http://profile.phinf.naver.net/38679/02fe0249291160ba4f57f3ab6f62df73c6e1144cf2b2efb005f967715142d33a.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:16:04+0900\",\"modTimeGmt\":\"2017-10-17T23:16:04+0000\",\"regTime\":\"2017-10-18T08:16:04+0900\",\"regTimeGmt\":\"2017-10-17T23:16:04+0000\",\"sympathyCount\":0,\"antipathyCount\":0,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":true,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"cms2****\",\"maskedUserName\":\"cm****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"default_society\",\"commentNo\":1099240845,\"parentCommentNo\":1099240845,\"replyLevel\":1,\"replyCount\":2,\"replyAllCount\":2,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508281805188,\"contents\":\"이게 다 드라마랑 연예인에 환장한 계집들 때문이다. 제발 정치와 경제에 관심을 가져라!\",\"userIdNo\":\"5pHfs\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"drip****\",\"userProfileImage\":\"http://profile.phinf.naver.net/11752/54c4509ebfa8941bc22c8c23a5354c266544e3824368f254484c439f6b29d814.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:10:05+0900\",\"modTimeGmt\":\"2017-10-17T23:10:05+0000\",\"regTime\":\"2017-10-18T08:10:05+0900\",\"regTimeGmt\":\"2017-10-17T23:10:05+0000\",\"sympathyCount\":0,\"antipathyCount\":3,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"drip****\",\"maskedUserName\":\"dr****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099239645,\"parentCommentNo\":1099239645,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508281642086,\"contents\":\"헐리웃 영화나 일본 애니메이션처럼 수십년을 사랑 받은 것도 아니고 반짝 드라마 세트장에 안일하게 세금 투입 ㅋㅋㅋ시즌제 드라마라면 이해라도 하지\",\"userIdNo\":\"1r60p\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"manm****\",\"userProfileImage\":\"http://profile.phinf.naver.net/34979/e8ac735cffc7baae0681e821d005490432ddf9af89d775abea0bcfcb18cbe5e2.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:07:22+0900\",\"modTimeGmt\":\"2017-10-17T23:07:22+0000\",\"regTime\":\"2017-10-18T08:07:22+0900\",\"regTimeGmt\":\"2017-10-17T23:07:22+0000\",\"sympathyCount\":1,\"antipathyCount\":0,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":true,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"manm****\",\"maskedUserName\":\"ma****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false},{\"ticket\":\"news\",\"objectId\":\"news437,0000165410\",\"categoryId\":\"*\",\"templateId\":\"view_society\",\"commentNo\":1099238685,\"parentCommentNo\":1099238685,\"replyLevel\":1,\"replyCount\":0,\"replyAllCount\":0,\"replyPreviewNo\":null,\"replyList\":null,\"imageCount\":0,\"imageList\":null,\"imagePathList\":null,\"imageWidthList\":null,\"imageHeightList\":null,\"commentType\":\"txt\",\"stickerId\":null,\"sticker\":null,\"sortValue\":1508281518668,\"contents\":\"청주 제빵왕김탁구세트장이랑 영광의 제인 빵집은 지금 어린이집과 유치원 빵만드는 시설과 빵집 국수집 같이하고 있는데... 이런 기사 보면 여기는 참 잘 활용하는 듯.\",\"userIdNo\":\"4a7rx\",\"lang\":\"ko\",\"country\":\"KR\",\"idType\":\"naver\",\"idProvider\":\"naver\",\"userName\":\"nyj7****\",\"userProfileImage\":\"http://profile.phinf.naver.net/34147/fab39edbb527c098c23f9dbbe9fc4b9f8eff7a1b74fcb3077cc3b93de862f382.jpg\",\"profileType\":\"naver\",\"modTime\":\"2017-10-18T08:05:18+0900\",\"modTimeGmt\":\"2017-10-17T23:05:18+0000\",\"regTime\":\"2017-10-18T08:05:18+0900\",\"regTimeGmt\":\"2017-10-17T23:05:18+0000\",\"sympathyCount\":0,\"antipathyCount\":1,\"userBlind\":false,\"hideReplyButton\":false,\"status\":0,\"mine\":false,\"best\":false,\"mentions\":null,\"userStatus\":0,\"categoryImage\":null,\"open\":false,\"levelCode\":null,\"grades\":null,\"sympathy\":false,\"antipathy\":false,\"snsList\":null,\"metaInfo\":null,\"extension\":null,\"audioInfoList\":null,\"translation\":null,\"report\":null,\"middleBlindReport\":false,\"visible\":true,\"manager\":false,\"shardTableNo\":445,\"deleted\":false,\"blindReport\":false,\"secret\":false,\"blind\":false,\"expose\":true,\"profileUserId\":null,\"containText\":true,\"maskedUserId\":\"nyj7****\",\"maskedUserName\":\"ny****\",\"validateBanWords\":false,\"exposeByCountry\":false,\"virtual\":false}]},\"date\":\"2017-10-18T08:16:21+0000\"});"
 ```
 
 ---
+
+## json 파싱
+
+표준 json의 경우는 httr 패키지의 content() 함수가 자동으로 list 자료형으로 변환해주나 네이버 댓글의 경우 표준과 모양이 달라서 fromJSON() 함수가 에러 발생.
 
 
 ```r
@@ -592,6 +774,11 @@ con &lt;- httr::GET(url,
                  httr::add_headers(Referer = ref))
 tt &lt;- httr::content(con, "text")
 jsonlite::fromJSON(tt)
+```
+```{}
+Error: lexical error: invalid char in json text.
+                                       jQuery1707377572341505474_15082
+                     (right here) ------^
 ```
 
 ---
