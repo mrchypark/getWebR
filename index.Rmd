@@ -462,7 +462,7 @@ js란 브라우저에서 동작하는 개발 언어!
 
 정적 vs 동적
 
-
+---
 
 
 그래서 동적 부분의 수정된 html을 가져오려면 브라우저가 필요함
@@ -484,12 +484,18 @@ headless란 사람이 보는 부분이 없는 것
 
 RSelenium이란 브라우저를 컨트롤하는 패키지(방법 3)
 
+---
+class: center, middle, title-slide
 
 마지막으로...
-+고급
 
-크롬 개발자 도구를 이용하면 js가 가져오는 api를 찾아서
-더 빠르게 정보를 가져올 수 있음
+---
+
+## +고급
+
+크롬 개발자 도구를 이용하면 js가 가져오는 api를 찾아서 더 빠르게 정보를 가져올 수 있음
+
+![](https://raw.githubusercontent.com/mrchypark/getWebR/master/img/comment.png)
 
 ---
 
