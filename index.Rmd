@@ -127,46 +127,55 @@ class: center, middle, title-slide
 ]
 ---
 
+## 웹 서버가 우리에게 주는 것
+
+text(html, css, js, etc), image. 브라우저가 약속된 모양으로 우리에게 보여줌.
+
+.pull-center[.set[
+![](https://qph.ec.quoracdn.net/main-qimg-1f99b9ce08edd2309efff97b710ffcbe)
+]]
+
+---
+
+## 실제로 브라우저가 받는 파일들
+
+.pull-center[.half[
+![](https://raw.githubusercontent.com/mrchypark/getWebR/master/img/source.png)
+]]
+
+---
+
 class: center, middle, title-slide
 
+## * 그럼 web api는 뭔가?
 
-웹 서버가 우리에게 주는 것
+web으로 제공되는 Application Programming Interface
 
-text(html, css, js, etc), image
+함수인데 외부 서버에서 동작하여 웹 기술로 결과를 받는 것
+
+---
+
+## 우리가 필요한 것
+
+text(html) 중 일부만(ex>제목)
+
+![](https://raw.githubusercontent.com/mrchypark/getWebR/master/img/title.png)
 
 ---
 
 class: center, middle, title-slide
 
 
-* 그럼 web api는 뭔가?
-web으로 제공되는 Application Programming Interface 라는 뜻
-대략 함수인데 외부 서버에서 동작하여 웹 기술로 결과를 받는 것
+### 그럼 이제 정리(에피타이저)를 설명
 
----
-
-class: center, middle, title-slide
-
-
-우리가 필요한 것
-
-text!(html)
-
----
-
-class: center, middle, title-slide
-
-
-그럼 이제 정리(에피타이저)를 설명(+ 요청 한가지)
-
-html 문서안에 글자 중 필요한 것만 가져오기 = 정리
+#### .blue[html 문서안에 글자 중 필요한 것만 가져오기]
 
 ---
 
 class: center, middle, title-slide
 
 1번 글자를 다루는 강력한 방법 : 정규표현식 하지만 어려움
-2번 node를 다루는 쉬운 패키지 : rvest
+2번 xml의 node를 다루는 패키지 : rvest
 
 ---
 

@@ -37,3 +37,9 @@ html, body, h1, h2, h3, h4, h5, h6, li, p {font-family:'Nanum Gothic';}
   left: 50%;
   width: 134%
 }
+
+.pull-center > .half {
+  position: relative;
+  left: 50%;
+  width: 118%
+}
