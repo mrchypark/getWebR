@@ -139,6 +139,8 @@ text(html, css, js, etc), image. 브라우저가 약속된 모양으로 우리�
 
 ---
 
+class: center, middle, title-slide
+
 ## * 그럼 web api는 뭔가?
 
 web으로 제공되는 Application Programming Interface
@@ -146,9 +148,6 @@ web으로 제공되는 Application Programming Interface
 함수인데 외부 서버에서 동작하여 웹 기술로 결과를 받는 것
 
 ---
-
-class: center, middle, title-slide
-
 
 ## 우리가 필요한 것
 
@@ -169,75 +168,123 @@ class: center, middle, title-slide
 
 class: center, middle, title-slide
 
-1번 글자를 다루는 강력한 방법 : 정규표현식 하지만 어려움
-2번 xml의 node를 다루는 패키지 : rvest
+#### 1번 글자를 다루는 강력한 방법 : 정규표현식 하지만 어려움    
+
+### 2번 xml의 node를 다루는 패키지 : rvest
 
 ---
 
 class: center, middle, title-slide
 
-
-정규표현식은 검색해보세요.
-r에서는 stringr 이라는 서포트 패키지가 있음.
-
----
-
-class: center, middle, title-slide
-
-rvest로 필요한 글자만 가져오기
-에는 node, attr, text만 기억하면 됨.
+정규표현식은 [검색](https://www.google.co.kr/search?q=%EC%A0%95%EA%B7%9C%ED%91%9C%ED%98%84%EC%8B%9D&amp;oq=%EC%A0%95%EA%B7%9C%ED%91%9C%ED%98%84%EC%8B%9D&amp;aqs=chrome..69i57j69i61.2391j0j7&amp;sourceid=chrome&amp;ie=UTF-8)해보세요.
+r에서는 [stringr](https://github.com/tidyverse/stringr) 이라는 서포트 패키지가 있음.
 
 ---
 
 class: center, middle, title-slide
 
-node란
-html 에서 tag라고 불리는 것.
-css 선택자가 동작하는 방식으로 node를 선택
+## [rvest](https://github.com/hadley/rvest)
+
+### node, attr, text만 기억하면 됨.
 
 ---
 
-class: center, middle, title-slide
+## node란
 
-css 선택자가 동작하는 3가지 방식
+html에서 tag라고 불리는 것.
+.pull-center[.ori[
+![](https://lh3.googleusercontent.com/SSAbYW6kAM728XuKv3PK5Uhgva0ueIBDnoGhPkou6lp9QYgDVwRFivfQNgORT8FT5js4gBFezjSvZlqujcbWup6yXvRTkEOkMotawSPcaOpc9dQvyVP05ODEFw)
+]]
+---
+
+## 그럼 html 이란
+
+[xml](https://ko.wikipedia.org/wiki/XML)양식으로 작성된 웹 브라우저들이 이해하는 표준 문서
+
+.pull-center[.ori[
+![](https://lh3.googleusercontent.com/az75sycVUFHD0aIKUmCZrs_Nf3-LCxiHSsYUZ_z5umiHK3XX77f1A6vCCD7YZYQNOAploEFjMYcu9x-DxRe5JdqZGFsnA3FhCvO3pRNBsK5M50RgzKd0hrx2gg)
+]]
+
+---
+
+## attr 이란
+
+attr은 attribute의 줄임으로 아래 예시로 tag의 attr1은 example1 임
+
+```{}
+&lt;tag attr1="example1" attr2="example2"&gt; 안녕하세요 &lt;/tag&gt;
+```
+
+---
+
+#### 원하는 글자가 있는 노드를 지정하기 위해서
+
+[css 선택자](http://www.nextree.co.kr/p8468/)를 공부해야 함.
+
+--
+
+#### css 선택자가 동작하는 방식
+
 1. tag 이름
 2. tag의 id 속성
 3. tag의 class 속성
+4. tag의 custom 속성
 
-이름.class
-이름#id
+--
 
-각각 독립적으로 사용가능
+#### css 선택자로 node를 선택하기 위해서
 
----
-
-class: center, middle, title-slide
-
-더 복잡한 기능은 여기
-http://www.nextree.co.kr/p8468/
-에서 2번 선택자의 종류 참고
-
----
-
-class: center, middle, title-slide
-
-text는 
-&lt;tag&gt; &lt;/tag&gt; 사이의 글자를 뜻함
+1. `tag`
+1. `#id`
+1. `.class`
+1. `[attr="val"]`
+1. `tag#id`
+1. `tag.class`
+1. `tag[attr="val"]`
 
 ---
 
-class: center, middle, title-slide
+## text 이란
 
-attr은 attribute의 줄임으로 tag의 attr1은 example1 임
-&lt;tag attr1="example1" attr2="example2"&gt; &lt;/tag&gt;
+text은 시작 태그와 종료 태그 사이에 있는 글자로, 아래 예시 기준 "안녕하세요" 를 뜻함
+
+```{}
+&lt;tag attr1="example1" attr2="example2"&gt; 안녕하세요 &lt;/tag&gt;
+```
 
 ---
 
-class: center, middle, title-slide
+## rvest의 동작 순서(text 가져오기)
 
-그래서 xml 형식의 R 객체를 다루는 rvest는 html_nodes("")로 필요한 node를 선택하고
-attr 이나 text로 node 내에 필요한 값을 가져옴.
+1. html 문서 데이터 가져오기
+1. 필요한 노드 선택하기
+1. 노드내에 text를 가져오기
 
+
+### rvest 함수
+
+```{}
+read_html(url)
+read_html(url) %&gt;% html_nodes("tag.class")
+read_html(url) %&gt;% html_nodes("tag.class") %&gt;% html_text
+```
+
+---
+
+## rvest의 동작 순서(attr 가져오기)
+
+1. html 문서 데이터 가져오기
+1. 필요한 노드 선택하기
+1. 노드내에 attr 중에 "attr1"값을 가져오기
+
+
+### rvest 함수
+
+```{}
+read_html(url)
+read_html(url) %&gt;% html_nodes("tag.class")
+read_html(url) %&gt;% html_nodes("tag.class") %&gt;% html_attr("attr1")
+```
 
 ---
 
@@ -289,76 +336,100 @@ url&lt;-"http://news.naver.com/main/read.nhn?mode=LS2D&amp;mid=shm&amp;sid1=102&
 
 class: center, middle, title-slide
 
-이러다 보니
-rvest는 html 문서로 되어 있는 웹에서의 텍스트 데이터를 가져오는데 특화됨(방법 1)
+rvest는 html 문서로 되어 있는 웹에서의 텍스트 데이터를 가져와서 처리하는 패키지
 
 ---
 
 class: center, middle, title-slide
 
-
-서버는 http/1.1 표준을 지킴
-그래서 우리가 알아야 할 것
-GET과 POST
+## 이제 메인! 요청하기
+### (read_html이 방법 1 ㄷㄷㄷ)
 
 ---
 
 class: center, middle, title-slide
 
-방금 read_html 함수는 GET 방식으로 서버에 요청하여 데이터를 받은 것.
-그게 html 텍스트 문서인데 그걸 xml 자료형이라고 처리함. 어쨌든
+### 그래서 우리가 알아야 할 것
+
+## GET과 POST
 
 ---
 
 class: center, middle, title-slide
 
-그럼 GET 으로 인터넷 주소를 요청하면 그 주소를 담당하는 서버가
-해당 주소로 GET 요청이 오면 주기로 하는 데이터를 전달해줌.
-보통 html
+방금 read_html 함수는 GET 방식으로 서버에 요청하여 html 문서를 받은 것.
 
 ---
 
 class: center, middle, title-slide
 
+http 표준 요청을 수행해 주는 [httr](https://github.com/r-lib/httr) 패키지
 
-web api 서버는? 데이터를 전달
+---
 
-보통 html과 같은 xml로 주던지, json으로 주던지.
+## GET 요청
 
-xml은 html과 같으니까 생략하고 그럼 json으로 주면 어떻게 하지?
+read_html(url) == content(GET(url)) 인걸로 GET 요청으로 html 문서를 가져올 때는 read_html()함수가 함께 처리해줌.
+
+
+```r
+library(httr)
+library(rvest)
+
+url&lt;-"http://news.naver.com/main/read.nhn?mode=LSD&amp;mid=shm&amp;sid1=102&amp;oid=437&amp;aid=0000165410"
+dat&lt;-GET(url)
+content(dat)
+```
+
+```
+## {xml_document}
+## &lt;html lang="ko"&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset= ...
+## [2] &lt;body&gt;\r\n&lt;div id="wrap"&gt;\r\n\t\r\n\t&lt;div id="da_base"&gt;&lt;/div&gt;\r\n\t&lt; ...
+```
+
+```r
+read_html(url)
+```
+
+```
+## {xml_document}
+## &lt;html lang="ko"&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset= ...
+## [2] &lt;body&gt;\r\n&lt;div id="wrap"&gt;\r\n\t\r\n\t&lt;div id="da_base"&gt;&lt;/div&gt;\r\n\t&lt; ...
+```
 
 ---
 
 class: center, middle, title-slide
 
-http 표준 요청을 수행해 주는 httr 패키지
+## 왜 GET 함수를 써야 하는가
+
+header, cookie 등 다양한 옵션을 사용할 수 있음.    
+
+ex&gt; 크롤러가 아니라고 속여야 한다던가....
 
 ---
 
 class: center, middle, title-slide
 
-
-만약에 json 데이터를 주기로 했으면 GET 요청을 했을 때 json이 응답으로 들어옴
-GET은 언제나 같은 주소에서 같은 데이터를 받을 수 있음.
+### 그럼 POST 란?
 
 ---
 
-class: center, middle, title-slide
+## POST 란
 
-
-그와 반면에 POST는 요청에 내가 추가하는 값과 함께 요청함
-그래서 결과가 그 값을 활용해서 나오는 결과임.
+body에 사용자가 필요한 값을 추가해서 요청을 할 수 있는 방법
 
 ---
 
-class: center, middle, title-slide
+## 
 
-
-띄어쓰기 예시
-
+---
 
 여기까지가 http 요청을 따라하는 httr 패키지(방법 2)
 
+---
 
 그럼 웹 서비스 2가지에 대응할 수 있게 되었음.
 
@@ -452,16 +523,16 @@ data$result$commentList[[1]]$contents
 ```
 
 ```
-##  [1] "저런걸 만들어놓고 중간에서 얼마나 해쳐드셨을까?"                                                                                                                                                                                      
-##  [2] "앞으로  지방정부나 중앙정부에서  이따위것만들려면 지자체장 개인 돈으로 우선 만들고 나서  추후 입장료 받아서 적자나면  지돈으로 해결시키고 남으면 정산처리해주기로 하자.  나랏돈은 눈먼 돈이라 여기는  역적  공뭔들이 없어지면 좋겠다."
-##  [3] "그러니까 짓지 말고 있는 공간내 한에서 촬영해....우리가 캐릭터에 집중하지 배경에 집착하는건 아니거든"                                                                                                                                  
-##  [4] "개인적으로 제주도 올인 세트장 아쉬움.... 계속 있었으면 명소가 됐을텐데"                                                                                                                                                               
-##  [5] "니돈이냐 내돈이냐 ㅋㅋㅋ 잘되면 내탓 못되면 니탓 ㅋㅋ"                                                                                                                                                                                
-##  [6] "다스는 누구꺼?https://youtu.be/o0Kk6_6P9wY"                                                                                                                                                                                           
-##  [7] "누군 단돈 만원도 아까워서. 없는돈 아끼려고 별짓을 다하는데.\n나라는 저러고 있내.9억원이면 내가 30년 먹고 써도 남것다."                                                                                                                
-##  [8] "첨부터 임시적으로 가건물이면 당연히 안전진단에서 좋은 등급은 나오기 힘들겠네.\n뻔한 스토리인데, 왜~  그렇게 큰돈을 들여 지었나? 이거~  뭐 구린거 있네. 조사해야것어. 그리고 나서  새로운 대책을 마련해야지. \n뭔가 수상해~"           
-##  [9] "변상조치 해라"                                                                                                                                                                                                                        
-## [10] "세금 좀 작작 걷어라"
+##  [1] "드라마세트장같은건 시간이 지나면 서서히 시들게 되있음 그럼 거기다 돈을 투자할려면 장기적으로 보고 후에 다른 컨텐츠를 확보해서 유지할 생각을 해야되는데 아무도 그런생각을 안함. 그런 상황도 모르고 지차체에서 돈퍼줄 생각을 한 사람도 잘라야됨"
+##  [2] "긍까 세금은 저리 써버리고 유명연옌은 돈 쓸어가고..방송국서 외쿡도 꽁으로 보내주고..."                                                                                                                                                         
+##  [3] "관리와 꾸준한 홍보 했음 이리  허물겠어?  주민들도 그래 지들이 관광객 받을 생각이였음 누워서 떡먹을 생각말고 지들끼리라도 발전시켰어야지"                                                                                                      
+##  [4] "드라마에서 못벗어나는 한심한 민족!"                                                                                                                                                                                                           
+##  [5] "임기내에 뭔가 보이는 업적 쌓아보겠다고 이것저것 많이 쳐 만드는데 막상 시간지나면 쓸데없어진게 대다수고 그런데서 세금 줄줄 다 새지. 시공업체 뇌물 받아먹기도 안성맞춤"                                                                         
+##  [6] "그래서 다스는 누구껀가요?"                                                                                                                                                                                                                    
+##  [7] "영화찍을때 화재 연기좀 안나게 합시다 매연과 미세먼지 보기만 해도 숨막혀여~"                                                                                                                                                                   
+##  [8] "이게 다 드라마랑 연예인에 환장한 계집들 때문이다. 제발 정치와 경제에 관심을 가져라!"                                                                                                                                                          
+##  [9] "헐리웃 영화나 일본 애니메이션처럼 수십년을 사랑 받은 것도 아니고 반짝 드라마 세트장에 안일하게 세금 투입 ㅋㅋㅋ시즌제 드라마라면 이해라도 하지"                                                                                               
+## [10] "청주 제빵왕김탁구세트장이랑 영광의 제인 빵집은 지금 어린이집과 유치원 빵만드는 시설과 빵집 국수집 같이하고 있는데... 이런 기사 보면 여기는 참 잘 활용하는 듯."
 ```
 
 ---
