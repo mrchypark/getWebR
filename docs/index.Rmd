@@ -24,7 +24,7 @@ class: center, middle, title-slide
 
 ## R로 웹 데이터를 가져오는 4가지 방법(은 크롤링)
 
-### <https://mrchypark.github.io/getWebR/index>
+### <https://mrchypark.github.io/getWebR>
 
 ### 박찬엽
 
@@ -642,4 +642,4 @@ data$result$commentList[[1]]$contents
 class: center, middle, title-slide
 
 # 끝!
-### <https://mrchypark.github.io/getWebR/index>
+### <https://mrchypark.github.io/getWebR>
