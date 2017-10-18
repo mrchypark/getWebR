@@ -386,9 +386,66 @@ body에 사용자가 필요한 값을 추가해서 요청을 할 수 있는 방�
 
 ---
 
-## 
+## 사용할 api
+
+[한글 띄어쓰기 api](http://freesearch.pe.kr/archives/4647)
+
+띄어쓰기가 불문명한 텍스트를 전달하면 맞는 띄어쓰기 결과를 돌려줌.
 
 ---
+
+## 실행
+
+```{r}
+library(httr)
+
+body<-list(sent="아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다.")
+res<-PUT(url='http://35.201.156.140:8080/spacing', body=body)
+
+content(res)$sent
+```
+
+---
+
+## body 란
+
+list() 자료형으로 되어 있고 이름이 있는 데이터로 만든 요청에 추가할 수 있는 값
+
+```{r}
+body<-list(sent="아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다.")
+body
+```
+
+
+---
+
+## 여긴 PUT 이라고 되어 있는데?
+
+PUT은 POST와 매우 유사한 요청 방식으로 서버에서 요구하는 방식을 지켜줘야함. 예시로 PUT을 사용했지만, 다른 POST가 필요한 곳에서는 POST 명령으로 작성하면 됨. 서비스 제공자가 설명서를 작성하게 되어있음.
+
+```{r}
+(res<-PUT(url='http://35.201.156.140:8080/spacing', body=body))
+```
+
+---
+
+## api 명세 예시
+
+![](https://raw.githubusercontent.com/mrchypark/getWebR/master/img/api.png)
+
+---
+
+## content() 함수
+
+httr 패키지의 요청들은 read_html() 함수와 달리 header 나 cookie 등의 모든 정보를 다 확인할 수 있음. 그래서 응답으로 서버가 데이터로써 준 내용을 확인하기 위해서 content() 함수를 제공함.
+
+```{r}
+content(res)
+```
+
+---
+
+class: center, middle, title-slide
 
 여기까지가 http 요청을 따라하는 httr 패키지(방법 2)
 
