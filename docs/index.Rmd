@@ -26,9 +26,13 @@ class: center, middle, title-slide
 
 ### <https://mrchypark.github.io/getWebR>
 
+#### [피드백하기](https://github.com/mrchypark/getWebR/issues/new)
+
 ### 박찬엽
 
 ### 2017년 10월 18일
+
+
 
 ---
 
@@ -643,3 +647,5 @@ class: center, middle, title-slide
 
 # 끝!
 ### <https://mrchypark.github.io/getWebR>
+
+#### [피드백하기](https://github.com/mrchypark/getWebR/issues/new)
