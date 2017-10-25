@@ -1,6 +1,18 @@
-@import url('httpS://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+@import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+@import url('https://fonts.googleapis.com/earlyaccess/nanumbrushscript.css');
+@import url('https://fonts.googleapis.com/earlyaccess/nanumpenscript.css');
 
-html, body, h1, h2, h3, h4, h5, h6, li, p {font-family:'Nanum Gothic';}
+html, body, h1, h2, h3, h4, h5, h6, li, p {font-family:'Spoqa Han Sans';}
+
+.pen-b { 
+  font-family: 'Nanum Brush Script', cursive;
+  font-size: 130%;
+}
+
+.pen-p { 
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 130%;
+}
 
 .blue {
   color: #3b5998;
