@@ -8,7 +8,7 @@ output:
     css: ["default", "custom.css"]
     lib_dir: libs
     includes:
-      in_header: https://raw.githubusercontent.com/mrchypark/mrchypark.github.io/master/google.html
+      in_header: google.html
     nature:
       highlightStyle: github
       highlightLines: true
