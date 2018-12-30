@@ -1,0 +1,84 @@
+class: inverse
+<br>
+.pull-left[
+  .pull-right[
+<br>
+<br>
+<br>
+    ![](https://avatars2.githubusercontent.com/u/6179259?v=4&s=460)
+  ]
+]
+.pull-right[
+### 박찬엽     
+- .yellow[(현)]코빗 재무팀 데이터 담당자
+  * 재무DB 구축/관리 및 자동화
+- .gray[(전)]서울도시가스 선행연구팀 연구원
+  * 챗봇 엔진 개발 및 서버 구축
+- .gray[(전)]2017년 패스트 캠퍼스 데이터 분석 R 강의
+  * [데이터 분석을 위한 중급 R 프로그래밍](http://www.fastcampus.co.kr/data_camp_dabrp/)
+- N사 뉴스 크롤러 [N2H4](https://github.com/forkonlp/N2H4), D사 뉴스 크롤러 [DNH4](https://github.com/forkonlp/DNH4) 관리자
+  * [ForkonLP](https://forkonlp.github.io/) 프로젝트
+  
+
+- .blue[**FACEBOOK**]@[mrchypark](https://www.facebook.com/mrchypark)
+- .gray[**GITHUB**]@[mrchypark](https://github.com/mrchypark)
+]
+---
+class: inverse
+
+블로그를 운영하고 있습니다.
+
+[<img src="https://user-images.githubusercontent.com/6179259/44062214-660e0516-9f96-11e8-8485-45c6b311639c.png" width=100%>](https://mrchypark.github.io/)
+
+---
+class: inverse
+
+열심히 R 생태계에 기여하고 있습니다.
+
+<img src="https://user-images.githubusercontent.com/6179259/44060543-fb3e0638-9f8f-11e8-8665-04a3705c2427.png" width=100%>
+
+---
+class: inverse
+
+인정도 조금 받고 있습니다.
+
+[<img src="https://user-images.githubusercontent.com/6179259/44060662-54345012-9f90-11e8-86e9-e5292b48770e.png" width=100%>](http://git-awards.com/users?country=south+korea&language=r)
+
+---
+class: inverse
+
+우연치 않게 번역도 했습니다.
+
+.pull-left[
+<img src="https://user-images.githubusercontent.com/6179259/44061228-74272ac8-9f92-11e8-99fc-7c4cbd81d2b4.png" width=99%>
+]
+.pull-right[
+<img src="http://image.yes24.com/momo/TopCate1880/MidCate009/187987333.jpg" width=85%>
+]
+---
+class: inverse
+
+한글 텍스트 기반 데이터 보급에 노력하고 있습니다.
+
+[<img src="https://user-images.githubusercontent.com/6179259/44061522-af39c80e-9f93-11e8-8977-9da05ee24115.png" width=100%>](https://forkonlp.github.io/)
+
+---
+class: inverse
+
+### [.blue[forkonlp]](https://forkonlp.github.io/)     
+  - [N2H4](https://github.com/forkonlp/N2H4) : 댓글 수집이 가능한 네이버 뉴스 크롤러
+  - [DNH4](https://github.com/forkonlp/DNH4) : 댓글 수집이 가능한 다음 뉴스 크롤러 
+  - [presidentSpeechKr](https://github.com/forkonlp/presidentSpeechKr) : 대통령 연설문
+  - [stdkor](https://github.com/forkonlp/stdkor) : 표준국어대사전 텍스트 자료
+
+### [.yellow[개인]](https://mrchypark.github.io/about)  
+  - [sendgridr](https://github.com/mrchypark/sendgridr) : 메일 전송 서비스 sendgrid api 패키지
+  - [ubci](https://github.com/mrchypark/ubci) : 업비트 거래소 인덱스&시세 데이터 
+  - [tqk](https://github.com/mrchypark/tqk) : 한국 주식 데이터
+  - [krlift](https://github.com/mrchypark/krlift) : 한국 승강기 현황 데이터
+  - [krlandprice](https://github.com/mrchypark/krlandprice) : 한국 표준공시지가 데이터
+---
+class: center, middle, title-slide, inverse
+
+# .pen-p[잘 부탁드립니다.]
+

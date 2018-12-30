@@ -8,7 +8,7 @@ output:
     css: ["default", "custom.css"]
     lib_dir: libs
     includes:
-      in_header: google.html
+      in_header: google_analytics.html
     nature:
       highlightStyle: github
       highlightLines: true
@@ -16,9 +16,11 @@ output:
       ratio: '16:9'
 ---
 
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+```{r include=FALSE}
 knitr::opts_chunk$set(cache = T, fig.height = 5)
+tar <- "https://raw.githubusercontent.com/mrchypark/self-introduce/master/docs/index.Rmd"
+
+download.file(tar, destfile = "intro.rmd")
 ```
 
 
@@ -33,32 +35,12 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### 2017년 10월 18일
+### 2017년 10월 18일 .small[.gray[(rendered at `r Sys.Date()`)]]
 
 ---
 
-## 발표자소개
-.center[
-  #### 질문 / 상담 / 잡담 대환영!
-]
-
-.pull-left[
-  .pull-right[
-<br>
-<br>
-    ![](https://avatars2.githubusercontent.com/u/6179259?v=4&s=460)
-  ]
-]
-.pull-right[
-### 박찬엽    
-- 서울도시가스 선행연구팀 연구원
-- 패스트 캠퍼스 [중급R프로그래밍](http://www.fastcampus.co.kr/data_camp_dabrp/) 강의
-- R 네이버 뉴스 크롤러 [N2H4](https://github.com/forkonlp/N2H4) 관리자
-- .yellow[**KAKAO**]@[알코홀릭](http://pf.kakao.com/_RXANd) R 질문방 운영
-- .blue[**FACEBOOK**]@[mrchypark](https://www.facebook.com/mrchypark)
-- .gray[**GITHUB**]@[mrchypark](https://github.com/mrchypark)
-]
-
+```{r child="intro.rmd"}
+```
 
 ---
 
@@ -401,7 +383,7 @@ body에 사용자가 필요한 값을 추가해서 요청을 할 수 있는 방�
 
 ## 실행
 
-```{r}
+```r
 library(httr)
 
 body<-list(sent="아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다.")
@@ -409,18 +391,23 @@ res<-PUT(url='http://35.201.156.140:8080/spacing', body=body)
 
 content(res)$sent
 ```
-
+```
+## [1] "아래와 같은 방식으로 API를 사용할 수 있으며, 호출 건수에 대해서 별도의 제한은 없으나, 1회 호출에 200글자로 글자수를 제한하고 있다. "
+```
 ---
 
 ## body 란
 
 list() 자료형으로 되어 있고 이름이 있는 데이터로 만든 요청에 추가할 수 있는 값
 
-```{r}
-body<-list(sent="아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다.")
+```r
+body <- list(sent = "아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다.")
 body
 ```
-
+```
+## $sent
+## [1] "아래와같은방식으로API를사용할수있으며,호출건수에대해서별도의제한은없으나,1회 호출에200글자로글자수를제한하고있다."
+```
 
 ---
 
@@ -428,8 +415,17 @@ body
 
 PUT은 POST와 매우 유사한 요청 방식으로 서버에서 요구하는 방식을 지켜줘야함. 예시로 PUT을 사용했지만, 다른 POST가 필요한 곳에서는 POST 명령으로 작성하면 됨. 서비스 제공자가 설명서를 작성하게 되어있음.
 
-```{r}
-(res<-PUT(url='http://35.201.156.140:8080/spacing', body=body))
+```r
+(res <- PUT(url = 'http://35.201.156.140:8080/spacing', body=body))
+```
+
+```
+## Response [http://35.201.156.140:8080/spacing]
+##   Date: 2017-10-18 06:48
+##   Status: 200
+##   Content-Type: application/json
+##   Size: 348 B
+## {"sent": "\uc544\ub798\uc640 \uac19\uc740 \ubc29\uc2dd\uc73c\ub85c API\u...
 ```
 
 ---
@@ -444,9 +440,14 @@ PUT은 POST와 매우 유사한 요청 방식으로 서버에서 요구하는 �
 
 httr 패키지의 요청들은 read_html() 함수와 달리 header 나 cookie 등의 모든 정보를 다 확인할 수 있음. 그래서 응답으로 서버가 데이터로써 준 내용을 확인하기 위해서 content() 함수를 제공함.
 
-```{r}
+```r
 content(res)
 ```
+```
+## $sent
+## [1] "아래와 같은 방식으로 API를 사용할 수 있으며, 호출 건수에 대해서 별도의 제한은 없으나, 1회 호출에 200글자로 글자수를 제한하고 있다. "
+```
+
 
 ---
 
@@ -530,22 +531,49 @@ phantomjs는 headless 브라우저로 headless란 사람이 보는 부분이 없
 
 ## 실행
 
-```{r}
+```r
 library(RSelenium)
 pJS <- wdman::phantomjs(port = 4567L)
-remDr <- remoteDriver(port=4567L, browserName = 'phantomjs')
+```
+```
+## checking phantomjs versions:
+## BEGIN: PREDOWNLOAD
+## BEGIN: DOWNLOAD
+## BEGIN: POSTDOWNLOAD
+```
+```r
+remDr <- remoteDriver(port = 4567L, browserName = 'phantomjs')
 remDr$open()
+```
+```
+## [1] "Connecting to remote server"
+## $browserName
+## [1] "phantomjs"
+## 
+## $version
+## [1] "2.1.1"
+## 
+## $driverName
+## [1] "ghostdriv
 ```
 
 ---
 
 ## 실행
 
-```{r}
+```r
 remDr$navigate("http://www.google.com/ncr")
 remDr$getTitle()[[1]]
+```
+```
+## [1] "Google"
+```
+```r
 remDr$close()
 pJS$stop()
+```
+```
+## [1] TRUE
 ```
 
 ---
