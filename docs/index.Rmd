@@ -35,7 +35,7 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### 2017년 10월 18일 .small[.gray[(rendered at `r Sys.Date()`)]]
+### 2017년 10월 18일(updated `r Sys.Date()`)
 
 ---
 
@@ -285,7 +285,7 @@ read_html(url) %>% html_nodes("tag.class") %>% html_attr("attr1")
 
 ```{r}
 library(rvest)
-url<-"http://news.naver.com/main/read.nhn?mode=LS2D&mid=shm&sid1=102&sid2=250&oid=025&aid=0002763120"
+url<-"https://news.naver.com/main/hotissue/read.nhn?mid=hot&sid1=100&cid=1079165&iid=2975770&oid=001&aid=0010571037&ptype=052"
 (nv<-read_html(url))
 (nvns<-html_nodes(nv, "h3#articleTitle"))
 ```

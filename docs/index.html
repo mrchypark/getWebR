@@ -40,7 +40,7 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### 2017년 10월 18일 .small[.gray[(rendered at 2018-12-30)]]
+### 2017년 10월 18일(updated 2019-01-10)
 
 ---
 
@@ -374,14 +374,7 @@ read_html(url) %&gt;% html_nodes("tag.class") %&gt;% html_attr("attr1")
 
 ```r
 library(rvest)
-```
-
-```
-## Loading required package: xml2
-```
-
-```r
-url&lt;-"http://news.naver.com/main/read.nhn?mode=LS2D&amp;mid=shm&amp;sid1=102&amp;sid2=250&amp;oid=025&amp;aid=0002763120"
+url&lt;-"https://news.naver.com/main/hotissue/read.nhn?mid=hot&amp;sid1=100&amp;cid=1079165&amp;iid=2975770&amp;oid=001&amp;aid=0010571037&amp;ptype=052"
 (nv&lt;-read_html(url))
 ```
 
@@ -397,7 +390,8 @@ url&lt;-"http://news.naver.com/main/read.nhn?mode=LS2D&amp;mid=shm&amp;sid1=102&
 ```
 
 ```
-## {xml_nodeset (0)}
+## {xml_nodeset (1)}
+## [1] &lt;h3 id="articleTitle"&gt;'깜짝 방중' 김정은, 中과 조율 마치고 美와 대화 본격 나서나&lt;/h3&gt;
 ```
 .pull-left[
 
